@@ -1,0 +1,54 @@
+<script lang="ts">
+	// stylesheet
+	import '../app.css';
+
+	// imports
+	import type { LayoutData } from './$types';
+	import * as AlertDialog from '$lib/components/ui/alert-dialog';
+	import { Skeleton } from '$lib/components/ui/skeleton';
+	import * as ContextMenu from '$lib/components/ui/context-menu';
+	import Navbar from '$lib/components/ui/Navbar.svelte';
+
+	// server data
+	export let data: LayoutData;
+
+	// func to check if project ready
+	const isProjectReady = (): boolean => {
+		const flag = data.project_ready as boolean;
+		return flag ?? false;
+	};
+</script>
+
+<ContextMenu.Root>
+	<ContextMenu.Trigger>
+		<Navbar />
+		{#if isProjectReady()}
+			<main>
+				{JSON.stringify(data)}
+				<!-- +page.svelte is rendered in this <slot> -->
+				<slot />
+			</main>
+		{:else}
+			<!-- alert if project not ready  -->
+			<AlertDialog.Root open={!isProjectReady()} onOpenChange={() => window.location.reload()}>
+				<AlertDialog.Content>
+					<AlertDialog.Header>
+						<AlertDialog.Title>You are too early ;/</AlertDialog.Title>
+						<AlertDialog.Description>
+							This action cannot be undone. This will permanently delete your account and remove
+							your data from our servers.
+						</AlertDialog.Description>
+					</AlertDialog.Header>
+					<AlertDialog.Footer>
+						<AlertDialog.Cancel>Contact</AlertDialog.Cancel>
+						<AlertDialog.Action>OK</AlertDialog.Action>
+					</AlertDialog.Footer>
+				</AlertDialog.Content>
+			</AlertDialog.Root>
+			<Skeleton class="h-screen w-screen" />
+		{/if}
+	</ContextMenu.Trigger>
+	<ContextMenu.Content>
+		<ContextMenu.Item>TODO</ContextMenu.Item>
+	</ContextMenu.Content>
+</ContextMenu.Root>
