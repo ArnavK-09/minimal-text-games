@@ -3,7 +3,7 @@ import Flagsmith from "flagsmith-nodejs";
 
 // init 
 const flagsmith = new Flagsmith({
- environmentKey: 's',
+ environmentKey: 'ser.TiNpnwHHZcLafEyPXjTfgm',
 });
 
 // export 

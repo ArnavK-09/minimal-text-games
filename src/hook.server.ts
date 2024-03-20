@@ -3,6 +3,7 @@ import { building } from '$app/environment';
 import { GlobalThisWSS } from '$lib/server/ws';
 import type { Handle } from '@sveltejs/kit';
 import type { ExtendedGlobal, ExtendedWebSocket } from '$lib/server/ws';
+import { nanoid } from 'nanoid';
 
 // Starting up websocket
 let wssInitialized = false;
@@ -26,11 +27,6 @@ const startupWebsocketServer = () => {
 
 // Handling server 
 export const handle = (async ({ event, resolve }) => {
-  // user auth
-  console.log(2323, (event.cookies.get('userID')))
-  // const session = await getSessionFromCookie(request.headers.cookie || '');
-  // if (!session) ws.close(1008, 'User not authenticated');
-  // ws.userId = session.userId;
   startupWebsocketServer();
   // Skip WebSocket server when pre-rendering pages
   if (!building) {

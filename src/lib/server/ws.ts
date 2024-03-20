@@ -1,7 +1,7 @@
 import { parse } from 'url';
-import { WebSocketServer } from 'ws';
+import { WebSocketServer, Server } from 'ws';
 import { nanoid } from 'nanoid';
-import type { RawData, Server, WebSocket as WebSocketBase } from 'ws';
+import type { RawData, WebSocket as WebSocketBase } from 'ws';
 import type { IncomingMessage } from 'http';
 import type { Duplex } from 'stream';
 
