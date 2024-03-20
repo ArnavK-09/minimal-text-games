@@ -8,6 +8,9 @@
 	import { Skeleton } from '$lib/components/ui/skeleton';
 	import * as ContextMenu from '$lib/components/ui/context-menu';
 	import Navbar from '$lib/components/ui/Navbar.svelte';
+	import { toast } from 'svelte-sonner';
+	import { Toaster } from '$lib/components/ui/sonner';
+	import { onMount } from 'svelte';
 
 	// server data
 	export let data: LayoutData;
@@ -17,15 +20,27 @@
 		const flag = data.project_ready as boolean;
 		return flag ?? false;
 	};
+	onMount(() => {
+		if (isProjectReady()) {
+			toast.success('Project is ready for you!', {
+				description: 'Powered By FlagSmith!'
+			});
+		} else {
+			toast.error('Project is not available to you!', {
+				description: 'Powered By FlagSmith!'
+			});
+		}
+	});
 </script>
 
 <ContextMenu.Root>
 	<ContextMenu.Trigger>
-		<Navbar />
+		<header>
+			<Navbar />
+			<Toaster />
+		</header>
 		{#if isProjectReady()}
-			<main>
-				{JSON.stringify(data)}
-				<!-- +page.svelte is rendered in this <slot> -->
+			<main class="mt-24">
 				<slot />
 			</main>
 		{:else}
