@@ -1,10 +1,10 @@
-// imports 
-import Flagsmith from "flagsmith-nodejs";
+// imports
+import Flagsmith from 'flagsmith-nodejs';
 
-// init 
+// init
 const flagsmith = new Flagsmith({
- environmentKey: 'ser.TiNpnwHHZcLafEyPXjTfgm',
+	environmentKey: 'ser.'
 });
 
-// export 
+// export
 export default flagsmith;

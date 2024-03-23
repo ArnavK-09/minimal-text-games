@@ -1,7 +1,7 @@
-// // imports 
+// // imports
 // import MindsDB from 'mindsdb-js-sdk';
 
-// // connect database 
+// // connect database
 // export default async () => {
 //     console.log(MindsDB.Databases.getAllDatabases())
 //     try {

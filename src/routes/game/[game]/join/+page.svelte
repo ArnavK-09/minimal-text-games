@@ -14,13 +14,8 @@
 <section class="grid h-screen place-items-center">
 	<div class="min-h-[16rem] min-w-[32rem]">
 		<form method="POST">
-			<Label>Game server code (automated)</Label>
-			<Input
-				name="code"
-				value={crypto.randomUUID()}
-				class="h-12 text-center text-xl"
-				placeholder="new game server code..."
-			/>
+			<Label>Enter Game server code to join</Label>
+			<Input name="code" class="h-12 text-center text-xl" placeholder="game server code..." />
 			<br />
 			{#if form?.error}
 				<Alert.Root variant="destructive">
@@ -31,7 +26,7 @@
 			{/if}
 			<hr class="my-3" />
 			<br />
-			<Button type="submit" class="text-md w-full font-bold" size="lg">Start</Button>
+			<Button type="submit" class="text-md w-full font-bold" size="lg">Join</Button>
 		</form>
 	</div>
 </section>
