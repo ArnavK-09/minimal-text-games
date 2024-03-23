@@ -12,14 +12,14 @@ export default {
 			console.log(`Client Connected with ID:- ${socket.id}`);
 
 			socket.on('startGame', (data) => {
-				let id = data.gameID;
-				let user = data.userID;
-				let game = data.game;
+				const id = data.gameID;
+				const user = data.userID;
+				const game = data.game;
 
 				if (game == 'describe_img') {
 					socket.emit('statusUpdate', {
 						status: 'waiting',
-						id,
+						gameID: id,
 						user,
 						game
 					});
@@ -27,9 +27,9 @@ export default {
 			});
 
 			socket.on('joinGame', (data) => {
-				let gameID = data.gameID;
-				let ownerID = data.userID;
-				let game = data.game;
+				const gameID = data.gameID;
+				const ownerID = data.userID;
+				const game = data.game;
 
 				if (game == 'describe_img') {
 					io.emit('statusUpdate', {

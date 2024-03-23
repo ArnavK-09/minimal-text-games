@@ -20,14 +20,16 @@
 	});
 </script>
 
-<section class="mt-4 grid place-items-center">
+<section class="grid min-h-screen place-items-center py-10">
 	<div class="px-4">
 		<div class="grid grid-cols-1 gap-5 lg:grid-cols-2">
 			<!-- Games Card -->
 			{#each games as game (game.id)}
 				<div>
 					<a href={`/game/${game.id}/start`} class="group cursor-pointer">
-						<Card.Root class="h-fit w-[90vw] transition-transform hover:scale-105 md:w-fit">
+						<Card.Root
+							class="contrast-105 h-fit w-[90vw] bg-background transition-transform hover:scale-105 md:w-fit"
+						>
 							<Card.Content class="break-words p-3 text-center">
 								<div
 									class="scale-80 mx-auto grid aspect-square h-fit w-fit place-items-center rounded-full bg-white/5 p-2"
@@ -48,7 +50,7 @@
 									</svg>
 								</div>
 								<h1
-									class="my-2 text-xl font-bold underline decoration-wavy underline-offset-8 md:text-4xl"
+									class="my-2 text-xl font-bold underline decoration-wavy underline-offset-8 md:px-10 md:text-3xl"
 								>
 									{game.title}
 								</h1>

@@ -2,6 +2,7 @@
  * Imports
  */
 import { writable } from 'svelte/store';
+
 /**
  * Types
  */

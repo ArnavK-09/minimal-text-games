@@ -1,5 +1,5 @@
 {
-	"name": "quine-quest-800",
+	"name": "minimal-games",
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
@@ -9,7 +9,7 @@
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --check . && eslint .",
-		"format": "prettier --write ."
+		"fmt": "prettier --write ."
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^3.0.0",

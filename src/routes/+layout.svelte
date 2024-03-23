@@ -7,10 +7,11 @@
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
 	import { Skeleton } from '$lib/components/ui/skeleton';
 	import * as ContextMenu from '$lib/components/ui/context-menu';
-	import Navbar from '$lib/components/ui/Navbar.svelte';
+	import Navbar from '$lib/components/Navbar.svelte';
 	import { toast } from 'svelte-sonner';
 	import { Toaster } from '$lib/components/ui/sonner';
 	import { onMount } from 'svelte';
+	let games: Array<{ id: string; title: string }> = [];
 
 	// server data
 	export let data: LayoutData;
@@ -21,6 +22,12 @@
 		return flag ?? false;
 	};
 	onMount(() => {
+		Object.keys(data.games).forEach((x) => {
+			games.push({
+				id: x,
+				title: data.games[x]
+			});
+		});
 		if (isProjectReady()) {
 			toast.success('Project is ready for you!', {
 				description: 'Powered By FlagSmith!'
@@ -64,6 +71,31 @@
 		{/if}
 	</ContextMenu.Trigger>
 	<ContextMenu.Content>
-		<ContextMenu.Item>TODO</ContextMenu.Item>
+		<a href="/">
+			<ContextMenu.Item>
+				Home
+				<ContextMenu.Shortcut>/</ContextMenu.Shortcut>
+			</ContextMenu.Item>
+		</a>
+		<ContextMenu.Separator />
+		<ContextMenu.Sub>
+			<ContextMenu.SubTrigger
+				>Start Game<ContextMenu.Shortcut></ContextMenu.Shortcut></ContextMenu.SubTrigger
+			>
+			<ContextMenu.SubContent class="w-48">
+				{#each games as game}
+					<a href={`/game/${game.id}/start`}>
+						<ContextMenu.Item>{game.title}</ContextMenu.Item>
+					</a>
+				{/each}
+			</ContextMenu.SubContent>
+		</ContextMenu.Sub>
+		<ContextMenu.Separator />
+		<a href="/game/join">
+			<ContextMenu.Item>
+				Join Game
+				<ContextMenu.Shortcut>/join</ContextMenu.Shortcut>
+			</ContextMenu.Item>
+		</a>
 	</ContextMenu.Content>
 </ContextMenu.Root>

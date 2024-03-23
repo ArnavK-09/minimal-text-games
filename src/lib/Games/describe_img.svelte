@@ -8,7 +8,7 @@
 	import { gameState } from '$lib/store';
 	import { goto } from '$app/navigation';
 	import ioClient, { Socket } from 'socket.io-client';
-	import Loader from '$lib/components/ui/Loader.svelte';
+	import Loader from '$lib/components/Loader.svelte';
 
 	type Player = {
 		id: string;
@@ -36,7 +36,6 @@
 		loading = false;
 	};
 
-	const showError = (e: any) => alert(e);
 	let status = 'LOADING';
 
 	onMount(() => {
@@ -87,11 +86,11 @@
 </script>
 
 {#if !loading}
-	<section class="grid place-items-center">
+	<section class="grid place-items-center py-12">
 		<div class="min-h-screen">
 			<div class="max-w-lg text-center">
 				{JSON.stringify(PLAYER)}
-				<h1 class="text-4xl font-bold leading-relaxed">{data.game_name} Gameplay!</h1>
+				<h1 class="text-4xl font-bold leading-relaxed">Describe the Image!<br />(*￣3￣)╭</h1>
 				<p class="py-4 text-sm opacity-90">
 					Lorem ipsum dolor, sit amet consectetur adipisicing elit. Corporis delectus voluptatum
 					quibusdam dicta! Tempore incidunt eius enim nihil beatae exercitationem, itaque in sunt
@@ -101,7 +100,7 @@
 			<div class="grid place-items-center">
 				<Carousel.Root class="aspect-square max-w-xs">
 					<Carousel.Content>
-						{#each Array(5) as _, i (i)}
+						{#each Array(5) as _ (_)}
 							<Carousel.Item>
 								<div class="p-1">
 									<Card.Root>
@@ -131,7 +130,7 @@
 							bind:value={image_desc_by_user}
 							placeholder="Type your message here."
 							id="input"
-							class="text-lg"
+							class="text-lg font-semibold"
 						/>
 						<p class="text-sm text-muted-foreground">
 							Your response is 100% secured. | Text Limit :- {image_desc_by_user.replaceAll(' ', '')

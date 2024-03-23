@@ -3,7 +3,7 @@
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { Input } from '$lib/components/ui/input';
 	import Label from '$lib/components/ui/label/label.svelte';
-	import type { ActionData, PageData } from './$types.js';
+	import type { ActionData } from './$types.js';
 	import * as Alert from '$lib/components/ui/alert/index.js';
 	import CircleAlert from 'lucide-svelte/icons/circle-alert';
 
