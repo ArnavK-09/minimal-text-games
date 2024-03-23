@@ -8,7 +8,7 @@ import { nanoid } from 'nanoid';
 export const load: LayoutServerLoad = async (event) => {
 	const envFlags = await flagsmith.getEnvironmentFlags();
 	const flags: Flag[] = envFlags.allFlags();
-	const games = Array.from(envFlags.getFlag('games').toString()) ?? [];
+
 	// user auth
 	let userID = event.cookies.get('userID');
 	if (!userID) {
@@ -22,7 +22,7 @@ export const load: LayoutServerLoad = async (event) => {
 
 	return {
 		project_ready: envFlags.getFeatureValue('project_ready'),
-		games: games,
+		games: JSON.parse(envFlags.getFeatureValue('games')),
 		userID: event.cookies.get('userID')!.toString(),
 		flags: flags.map((x) => {
 			return {

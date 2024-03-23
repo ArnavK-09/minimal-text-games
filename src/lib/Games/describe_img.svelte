@@ -7,74 +7,91 @@
 	import { onMount } from 'svelte';
 	import { gameState } from '$lib/store';
 	import { goto } from '$app/navigation';
+	import ioClient, { Socket } from 'socket.io-client';
+	import Loader from '$lib/components/ui/Loader.svelte';
 
-	export let data;
+	type Player = {
+		id: string;
+	};
+
+	export let data: {
+		userID: string;
+		project_ready: any;
+		games: any;
+		flags: {
+			value: string | number | boolean | undefined;
+			name: string;
+		}[];
+		game: string;
+		gameID: string;
+		game_name: any;
+	};
+
+	let PLAYER: Player;
 	let loading = true;
-	let ws: WebSocket;
+	let ws: Socket;
+
+	const startGame = (player: Player) => {
+		PLAYER = player;
+		loading = false;
+	};
 
 	const showError = (e: any) => alert(e);
 	let status = 'LOADING';
 
 	onMount(() => {
 		gameState.set({
-			ws: new WebSocket(`wss://${window.location.host}/websocket`),
+			ws: ioClient(window.location.host),
 			game: data.game,
 			userID: data.userID
 		});
-		ws = $gameState.ws as WebSocket;
-		ws.onopen = () => {
-			ws.send(
-				JSON.stringify({
-					event: 'start_game',
-					game: 'describe_img' ?? data.game,
-					gameID: data.uuid,
-					userID: data.userID
-				})
-			);
-		};
-		ws.addEventListener('player_joined', (data) => {
-			console.log(data, data.toString(), 699696);
-		});
-		ws.onclose = () => {
-			showError('server500');
-			setTimeout(() => goto('/'), 1000 * 2);
-		};
-		ws.onmessage = (e) => {
-			let WS_DATA;
-			try {
-				WS_DATA = JSON.parse(e.data);
-			} catch {
-				return;
-			}
 
-			if (WS_DATA.to == data.uuid && WS_DATA.player == data.userID) {
-				if (WS_DATA.error) {
-					// error
-					return showError(WS_DATA.error);
+		ws = $gameState.ws as Socket;
+
+		ws.on('connect', () => {
+			ws.emit('startGame', {
+				event: 'start_game',
+				game: data.game,
+				gameID: data.gameID,
+				userID: data.userID
+			});
+		});
+
+		ws.on('statusUpdate', (e) => {
+			if (e.gameID == data.gameID && e.user == data.userID) {
+				if (e.status == 'waiting') {
+					status = 'Waiting for other player to connect...';
 				}
-				if (WS_DATA.event == 'waiting') {
-					status = 'waiting for your buddy to connect';
-				}
-				if (WS_DATA.event == 'start_game') {
-					console.log('START_GAME');
+				if (e.status == 'player_joined') {
+					startGame(e.player);
 				}
 			}
-		};
+		});
+
+		ws.onAny((e) => {
+			console.log(`[SOCKET] Got event "${e}" `);
+		});
+
+		ws.on('disconnect', () => {
+			status = 'Server Disconnected...';
+			setTimeout(() => goto('/'), 1000 * 2);
+		});
 	});
 
 	let image_desc_by_user: string = '';
 	$: {
-		if (image_desc_by_user.length >= 30) {
-			image_desc_by_user = image_desc_by_user.slice(0, 30);
+		if (image_desc_by_user.replaceAll(' ', '').length >= 100) {
+			image_desc_by_user = image_desc_by_user.slice(0, 100);
 		}
 	}
 </script>
 
-{#if !loading && ws}
+{#if !loading}
 	<section class="grid place-items-center">
 		<div class="min-h-screen">
 			<div class="max-w-lg text-center">
-				<h1 class="text-4xl font-bold leading-5">Gameplay!</h1>
+				{JSON.stringify(PLAYER)}
+				<h1 class="text-4xl font-bold leading-relaxed">{data.game_name} Gameplay!</h1>
 				<p class="py-4 text-sm opacity-90">
 					Lorem ipsum dolor, sit amet consectetur adipisicing elit. Corporis delectus voluptatum
 					quibusdam dicta! Tempore incidunt eius enim nihil beatae exercitationem, itaque in sunt
@@ -114,9 +131,11 @@
 							bind:value={image_desc_by_user}
 							placeholder="Type your message here."
 							id="input"
+							class="text-lg"
 						/>
 						<p class="text-sm text-muted-foreground">
-							Your response is 100% secured. | Text Limit :- {image_desc_by_user.length}/30
+							Your response is 100% secured. | Text Limit :- {image_desc_by_user.replaceAll(' ', '')
+								.length}/100
 						</p>
 						<Button
 							disabled={image_desc_by_user.length < 5}
@@ -129,5 +148,10 @@
 		</div>
 	</section>
 {:else}
-	{status} {JSON.stringify($gameState)}
+	<section class="grid h-screen place-items-center">
+		<div>
+			<Loader />
+			<h2 class="mt-4 break-words text-2xl font-semibold opacity-95">{status}</h2>
+		</div>
+	</section>
 {/if}

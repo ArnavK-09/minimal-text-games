@@ -1,7 +1,6 @@
 /**
  * Imports
  */
-import type { ExtendedWebSocket } from '$lib/server/ws';
 import { writable } from 'svelte/store';
 /**
  * Types

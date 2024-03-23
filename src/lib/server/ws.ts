@@ -83,7 +83,7 @@ export const createWSSGlobalInstance = () => {
 						})
 					);
 					console.log(ws.emit('player_joined', 'hi'), 2);
-          console.log(wss.emit('player_joined', ws), wss.clients)
+					console.log(wss.emit('player_joined', ws), wss.clients);
 					console.log(wss.eventNames(), 23);
 					console.log(
 						wss.emit('player_joined', {

@@ -6,6 +6,7 @@
 	import type { ActionData } from './$types.js';
 	import * as Alert from '$lib/components/ui/alert/index.js';
 	import CircleAlert from 'lucide-svelte/icons/circle-alert';
+	import { nanoid } from 'nanoid';
 
 	// server data
 	export let form: ActionData;
@@ -14,10 +15,10 @@
 <section class="grid h-screen place-items-center">
 	<div class="min-h-[16rem] md:w-[32rem]">
 		<form method="POST">
-			<Label>Game server code (automated)</Label>
+			<Label>Game server code (5 characters only)</Label>
 			<Input
 				name="code"
-				value={crypto.randomUUID()}
+				value={nanoid(5)}
 				class="h-12 text-center text-xl"
 				placeholder="new game server code..."
 			/>
