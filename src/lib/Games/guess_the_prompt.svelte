@@ -10,6 +10,8 @@
 	import ioClient, { Socket } from 'socket.io-client';
 	import Loader from '$lib/components/Loader.svelte';
 
+	export let notHost: boolean = false;
+
 	type Player = {
 		id: string;
 	};
@@ -48,8 +50,7 @@
 		ws = $gameState.ws as Socket;
 
 		ws.on('connect', () => {
-			ws.emit('startGame', {
-				event: 'start_game',
+			ws.emit(notHost ? 'joinGame' : 'startGame', {
 				game: data.game,
 				gameID: data.gameID,
 				userID: data.userID
@@ -64,7 +65,14 @@
 				if (e.status == 'player_joined') {
 					startGame(e.player);
 				}
+				if (e.status == 'loading') {
+					status = 'Conecting to game....';
+				}
 			}
+		});
+
+		ws.on('resultsPublished', (data) => {
+			console.log('RESULTS', data);
 		});
 
 		ws.onAny((e) => {
@@ -72,10 +80,22 @@
 		});
 
 		ws.on('disconnect', () => {
-			status = 'Server Disconnected...';
+			status = 'Disconnected from server...';
 			setTimeout(() => goto('/'), 1000 * 2);
 		});
 	});
+
+	const submitPlayerEntry = () => {
+		ws.emit('updateUserEntry', {
+			game: data.game,
+			gameID: data.gameID,
+			userID: data.userID,
+			against: PLAYER.id,
+			ENTRY_VALUE: image_desc_by_user.trim()
+		});
+		loading = true;
+		status = 'Waiting for other player to submit entry...';
+	};
 
 	let image_desc_by_user: string = '';
 	$: {
@@ -90,40 +110,32 @@
 		<div class="min-h-screen">
 			<div class="max-w-lg text-center">
 				{JSON.stringify(PLAYER)}
-				<h1 class="text-4xl font-bold leading-relaxed">Describe the Image!<br />(*￣3￣)╭</h1>
-				<p class="py-4 text-sm opacity-90">
-					Lorem ipsum dolor, sit amet consectetur adipisicing elit. Corporis delectus voluptatum
-					quibusdam dicta! Tempore incidunt eius enim nihil beatae exercitationem, itaque in sunt
-					doloremque nemo optio, tempora numquam fugiat nobis?
-				</p>
+				<div class="grid place-items-center">
+					<h1 class="text-4xl font-bold leading-relaxed">Guess the prompt!<br />(*￣3￣)╭</h1>
+					<p class="py-4 text-sm opacity-90">
+						Lorem ipsum dolor, sit amet consectetur adipisicing elit. Corporis delectus voluptatum
+						quibusdam dicta! Tempore incidunt eius enim nihil beatae exercitationem, itaque in sunt
+						doloremque nemo optio, tempora numquam fugiat nobis?
+					</p>
+				</div>
 			</div>
 			<div class="grid place-items-center">
-				<Carousel.Root class="aspect-square max-w-xs">
-					<Carousel.Content>
-						{#each Array(5) as _ (_)}
-							<Carousel.Item>
-								<div class="p-1">
-									<Card.Root>
-										<Card.Content class="flex aspect-square items-center justify-center p-1">
-											<img
-												class="h-full w-full rounded-sm"
-												src="https://placehold.co/600x600/png"
-												alt="describe this"
-											/>
-										</Card.Content>
-									</Card.Root>
-								</div>
-							</Carousel.Item>
-						{/each}
-					</Carousel.Content>
-					<Carousel.Previous />
-					<Carousel.Next />
-				</Carousel.Root>
+				<div class="aspect-square max-w-sm p-1">
+					<Card.Root>
+						<Card.Content class="flex aspect-square items-center justify-center p-1">
+							<img
+								class="h-full w-full rounded-sm"
+								src="https://placehold.co/600x600/png"
+								alt="describe this"
+							/>
+						</Card.Content>
+					</Card.Root>
+				</div>
 			</div>
 			<hr class="my-5" />
 			<div>
 				<div class="grid w-full gap-1.5">
-					<form method="post">
+					<form on:submit|preventDefault={submitPlayerEntry}>
 						<Label for="input">Describe image in your words...</Label>
 						<Textarea
 							name="input"

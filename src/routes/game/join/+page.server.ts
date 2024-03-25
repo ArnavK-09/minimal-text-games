@@ -6,12 +6,13 @@ import { fail, redirect } from '@sveltejs/kit';
 export const actions: Actions = {
 	default: async ({ request }) => {
 		const data = await request.formData();
-		const code = data.get('code');
+		const code = data.get('code')?.toString();
+		const game = "guess_the_prompt"; //todo
 		if (code?.length !== 5) {
 			return fail(400, {
 				error: 'Invalid Game ID Provided for Joining....'
 			});
 		}
-		return redirect(301, `/game/${code}`);
+		return redirect(301, `/game/${game}/${code}/player`);
 	}
 };

@@ -22,8 +22,3 @@ export const isWebsocketEstablised = writable<boolean>(false);
  */
 export const gameState = writable<GameState>();
 
-// gameState.set({
-//     userID: cookies.get("userID") ?? nanoid(16),
-//     ws: new WebSocket(`ws://${request.headers.get('host')}/websocket`),
-//     game: params.game
-// })
