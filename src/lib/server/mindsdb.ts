@@ -13,19 +13,23 @@ import MindsDB from 'mindsdb-js-sdk';
 //         console.log(error)
 //     }
 // }
-// const query = `SELECT * FROM table_name`;
-// const queryResult = await MindsDB.SQL.runQuery(query);
 
 export const startNewGame = async (
 	host: string,
 	game: string,
-	code: string,
+	id: string,
 	status = 'waiting'
 ) => {
-	const query = `INSERT INTO Games (status, host, code, game) VALUES (${status}, ${host}, ${code}, ${game});`;
+	const query = `INSERT INTO Games (status, host, id, game) VALUES (${status}, ${host}, ${id}, ${game});`;
 	return await MindsDB.SQL.runQuery(query);
 };
 
-export const joinGame = () => {};
+export const joinGame = async (gameID: string, newPlayerId: string, expectedText: string, meta = "none") => {
+    const query = `UPDATE Game SET against = '${newPlayerId}', status = 'player_joined', expected = ${expectedText}, meta = ${meta} WHERE id = ${gameID};`
+    return await MindsDB.SQL.runQuery(query);
+};
 
-export const getNewGame = () => {};
+export const getNewGame = async (gameID: string) => {
+    const query = `SELECT * FROM Games WHERE id = ${gameID};`;
+	return await MindsDB.SQL.runQuery(query);
+};

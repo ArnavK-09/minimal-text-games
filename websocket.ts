@@ -1,4 +1,5 @@
 // imports
+import { joinGame, startNewGame } from './src/lib/server/mindsdb';
 import { Server } from 'socket.io';
 
 // base payload of ws input
@@ -32,23 +33,32 @@ export default {
 			});
 
 			// on new game
-			socket.on('startGame', (data: wsPayload) => {
+			socket.on('startGame', async (data: wsPayload) => {
 				const id = data.gameID;
 				const user = data.userID;
 				const game = data.game;
 
 				if (game == 'guess_the_prompt') {
-					socket.emit('statusUpdate', {
-						status: 'waiting',
-						gameID: id,
-						user,
-						game
-					});
+					await startNewGame(user, game, id).then((x) => {
+						if (x.type == 'error') {
+							io.emit('serverError', {
+								gameID: id,
+								message: x.error_message
+							})
+							return
+						}
+						socket.emit('statusUpdate', {
+							status: 'waiting',
+							gameID: id,
+							user,
+							game
+						});
+					})
 				}
 			});
 
 			// on join game
-			socket.on('joinGame', (data: wsPayload) => {
+			socket.on('joinGame', async (data: wsPayload) => {
 				const gameID = data.gameID;
 				const hostID = data.userID;
 				const userID = data.userID;
@@ -64,15 +74,27 @@ export default {
 							id: hostID
 						}
 					});
-					io.emit('statusUpdate', {
-						status: 'player_joined',
-						gameID: gameID,
-						user: hostID,
-						game,
-						player: {
-							id: userID
+					// meta @TODO
+					const expectedText = 'TODO';
+					const meta = 'IMAGE_LINK'
+					await joinGame(gameID, userID, expectedText, meta).then((x) => {
+						if (x.type == 'error') {
+							io.emit('serverError', {
+								gameID,
+								message: x.error_message
+							})
+							return
 						}
-					});
+						io.emit('statusUpdate', {
+							status: 'player_joined',
+							gameID: gameID,
+							user: hostID,
+							game,
+							player: {
+								id: userID
+							}
+						});
+					})
 				}
 			});
 

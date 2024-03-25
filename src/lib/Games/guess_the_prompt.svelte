@@ -56,6 +56,13 @@
 			});
 		});
 
+		ws.on('serverError', (e) => {
+			if(e.gameId == data.gameID) {
+				loading = true
+				status = `[ERROR] ${e.message.toString() ?? 'Internal Error!'}`
+			}
+		})
+
 		ws.on('statusUpdate', (e) => {
 			if (e.gameID == data.gameID && e.user == data.userID) {
 				if (e.status == 'waiting') {

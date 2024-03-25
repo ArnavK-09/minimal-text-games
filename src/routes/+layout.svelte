@@ -46,7 +46,7 @@
 			<Toaster />
 		</header>
 		{#if isProjectReady()}
-			<main class="mt-24">
+			<main class="mt-[7rem]">
 				<slot />
 			</main>
 		{:else}
