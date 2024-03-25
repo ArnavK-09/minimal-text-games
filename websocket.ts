@@ -1,11 +1,14 @@
+// imports
 import { Server } from 'socket.io';
 
+// base payload of ws input
 type wsPayload = {
 	gameID: string;
 	userID: string;
 	game: 'guess_the_prompt' | 'owoify_text';
 };
 
+// vite ws handler
 export default {
 	name: 'webSocketServer',
 	configureServer(server: any) {
@@ -14,9 +17,12 @@ export default {
 			cookie: true
 		});
 
+		// on connection
 		io.on('connection', (socket) => {
+			// log
 			console.log(`Client Connected with ID:- ${socket.id}`);
 
+			// on text-game player entry submission
 			socket.on('updateUserEntry', (data: wsPayload & { ENTRY_VALUE: string; against: string }) => {
 				io.emit('resultsPublished', {
 					gameID: data.gameID,
@@ -25,6 +31,7 @@ export default {
 				});
 			});
 
+			// on new game
 			socket.on('startGame', (data: wsPayload) => {
 				const id = data.gameID;
 				const user = data.userID;
@@ -40,6 +47,7 @@ export default {
 				}
 			});
 
+			// on join game
 			socket.on('joinGame', (data: wsPayload) => {
 				const gameID = data.gameID;
 				const hostID = data.userID;
@@ -72,7 +80,5 @@ export default {
 				console.log(`Client Disconnected with ID:- ${socket.id}`);
 			});
 		});
-
-		console.log('SocketIO Configured');
 	}
 };

@@ -5,7 +5,6 @@
 	// imports
 	import type { LayoutData } from './$types';
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
-	import { Skeleton } from '$lib/components/ui/skeleton';
 	import * as ContextMenu from '$lib/components/ui/context-menu';
 	import Navbar from '$lib/components/Navbar.svelte';
 	import { toast } from 'svelte-sonner';
@@ -67,7 +66,6 @@
 					</AlertDialog.Footer>
 				</AlertDialog.Content>
 			</AlertDialog.Root>
-			<Skeleton class="h-screen w-screen" />
 		{/if}
 	</ContextMenu.Trigger>
 	<ContextMenu.Content>
