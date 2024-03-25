@@ -23,6 +23,7 @@ export const load: LayoutServerLoad = async (event) => {
 	return {
 		project_ready: envFlags.getFeatureValue('project_ready'),
 		games: JSON.parse(envFlags.getFeatureValue('games')),
+		icons: JSON.parse(envFlags.getFeatureValue('games_icons')),
 		userID: event.cookies.get('userID')!.toString(),
 		flags: flags.map((x) => {
 			return {

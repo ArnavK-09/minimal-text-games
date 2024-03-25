@@ -25,7 +25,7 @@
 						></path>
 					</svg>
 					<span class="h-fit p-0 align-baseline text-lg font-extrabold tracking-wide">
-						Minimal Games!
+						Minimal Text Games!
 					</span>
 				</div>
 			</a>

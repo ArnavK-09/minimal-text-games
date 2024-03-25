@@ -21,4 +21,3 @@ export const isWebsocketEstablised = writable<boolean>(false);
  * Current user game state
  */
 export const gameState = writable<GameState>();
-

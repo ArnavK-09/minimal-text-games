@@ -5,7 +5,7 @@
 
 	// Web data
 	export let data: any;
-    const notHost: boolean = true; 
+	const notHost: boolean = true;
 </script>
 
 {#if data.game == 'guess_the_prompt'}

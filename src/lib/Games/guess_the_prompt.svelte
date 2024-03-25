@@ -1,7 +1,6 @@
 <script lang="ts">
 	import Button from '$lib/components/ui/button/button.svelte';
 	import * as Card from '$lib/components/ui/card/index.js';
-	import * as Carousel from '$lib/components/ui/carousel/index.js';
 	import Label from '$lib/components/ui/label/label.svelte';
 	import { Textarea } from '$lib/components/ui/textarea';
 	import { onMount } from 'svelte';
@@ -38,7 +37,7 @@
 		loading = false;
 	};
 
-	let status = 'LOADING';
+	let status = 'Loading...';
 
 	onMount(() => {
 		gameState.set({
