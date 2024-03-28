@@ -6,10 +6,12 @@
 	import type { ActionData } from './$types.js';
 	import * as Alert from '$lib/components/ui/alert/index.js';
 	import CircleAlert from 'lucide-svelte/icons/circle-alert';
+	import { page } from '$app/stores';
 	import { nanoid } from 'nanoid';
 
 	// server data
 	export let form: ActionData;
+	export let data;
 </script>
 
 <section class="grid h-screen place-items-center">
@@ -22,6 +24,8 @@
 				class="h-12 text-center text-xl"
 				placeholder="new game server code..."
 			/>
+			<input name="game" class="hidden" type="text" value={$page.params.game} />
+			<input name="userID" class="hidden" type="text" value={data.userID} />
 			<br />
 			{#if form?.error}
 				<Alert.Root variant="destructive">

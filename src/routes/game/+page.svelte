@@ -30,7 +30,7 @@
 				<div>
 					<a href={`/game/${game.id}/start`} class="group cursor-pointer">
 						<Card.Root
-							class="contrast-105 h-fit w-[90vw] bg-background transition-transform hover:scale-105 md:w-fit"
+							class="contrast-105 h-fit w-full bg-background transition-transform hover:scale-105"
 						>
 							<Card.Content class="break-words p-3 text-center">
 								<div

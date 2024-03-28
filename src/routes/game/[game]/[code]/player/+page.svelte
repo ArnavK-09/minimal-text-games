@@ -11,5 +11,5 @@
 {#if data.game == 'guess_the_prompt'}
 	<DescribeImg {data} {notHost} />
 {:else if data.game == 'owoify_text'}
-	<OwoText />
+	<OwoText {data} {notHost} />
 {/if}

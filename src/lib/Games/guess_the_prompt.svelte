@@ -8,6 +8,8 @@
 	import { goto } from '$app/navigation';
 	import ioClient, { Socket } from 'socket.io-client';
 	import Loader from '$lib/components/Loader.svelte';
+	import { toast } from 'svelte-sonner';
+	import updateUserScore from '$lib/updateUserScore';
 
 	export let notHost: boolean = false;
 
@@ -31,10 +33,12 @@
 	let PLAYER: Player;
 	let loading = true;
 	let ws: Socket;
+	let IMG = 'https://placehold.co/600x600/png';
 
-	const startGame = (player: Player) => {
+	const startGame = (player: Player, image_url: string) => {
 		PLAYER = player;
 		loading = false;
+		if (image_url) IMG = image_url;
 	};
 
 	let status = 'Loading...';
@@ -57,11 +61,11 @@
 		});
 
 		ws.on('serverError', (e) => {
-			if(e.gameId == data.gameID) {
-				loading = true
-				status = `[ERROR] ${e.message.toString() ?? 'Internal Error!'}`
+			if (e.gameID == data.gameID) {
+				loading = true;
+				status = `[ERROR] ${e.message.toString() ?? 'Internal Error!'}`;
 			}
-		})
+		});
 
 		ws.on('statusUpdate', (e) => {
 			if (e.gameID == data.gameID && e.user == data.userID) {
@@ -69,7 +73,7 @@
 					status = 'Waiting for other player to connect...';
 				}
 				if (e.status == 'player_joined') {
-					startGame(e.player);
+					startGame(e.player, e.meta);
 				}
 				if (e.status == 'loading') {
 					status = 'Conecting to game....';
@@ -77,8 +81,17 @@
 			}
 		});
 
-		ws.on('resultsPublished', (data) => {
-			console.log('RESULTS', data);
+		ws.on('notifyPlayer', (e: any) => {
+			if (e.gameID == data.gameID && e.userID == data.userID) {
+				toast.info('From Sever', {
+					description: e.message ?? 'Other player just submitted their entry'
+				});
+			}
+		});
+
+		ws.on('resultsPublished', (e: any) => {
+			if (e.winner == data.userID) updateUserScore();
+			goto(`/game/results?data=${encodeURIComponent(JSON.stringify(e))}`);
 		});
 
 		ws.onAny((e) => {
@@ -112,7 +125,7 @@
 </script>
 
 {#if !loading}
-	<section class="grid place-items-center py-12">
+	<section class="grid place-items-center px-4 py-12">
 		<div class="min-h-screen">
 			<div class="max-w-lg text-center">
 				{JSON.stringify(PLAYER)}
@@ -129,11 +142,7 @@
 				<div class="aspect-square max-w-sm p-1">
 					<Card.Root>
 						<Card.Content class="flex aspect-square items-center justify-center p-1">
-							<img
-								class="h-full w-full rounded-sm"
-								src="https://placehold.co/600x600/png"
-								alt="describe this"
-							/>
+							<img class="h-full w-full rounded-sm" src={IMG} alt="describe this" />
 						</Card.Content>
 					</Card.Root>
 				</div>
@@ -166,7 +175,7 @@
 	</section>
 {:else}
 	<section class="grid h-screen place-items-center">
-		<div>
+		<div class="px-4 text-center">
 			<Loader />
 			<h2 class="mt-4 break-words text-2xl font-semibold opacity-95">{status}</h2>
 		</div>
