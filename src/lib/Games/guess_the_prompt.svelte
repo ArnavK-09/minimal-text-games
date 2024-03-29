@@ -9,13 +9,21 @@
 	import ioClient, { Socket } from 'socket.io-client';
 	import Loader from '$lib/components/Loader.svelte';
 	import { toast } from 'svelte-sonner';
-	import updateUserScore from '$lib/updateUserScore';
+	import { updateUserScore } from '$lib/userScores';
 
 	export let notHost: boolean = false;
 
 	type Player = {
 		id: string;
 	};
+
+	interface Results {
+		winner: string;
+		looser: string;
+		game: string;
+		addedScore: number;
+		scores: unknown[];
+	}
 
 	export let data: {
 		userID: string;
@@ -83,19 +91,19 @@
 
 		ws.on('notifyPlayer', (e: any) => {
 			if (e.gameID == data.gameID && e.userID == data.userID) {
-				toast.info('From Sever', {
+				toast.info('From Server', {
 					description: e.message ?? 'Other player just submitted their entry'
 				});
 			}
 		});
 
-		ws.on('resultsPublished', (e: any) => {
+		ws.on('resultsPublished', (e: Results) => {
 			if (e.winner == data.userID) updateUserScore();
 			goto(`/game/results?data=${encodeURIComponent(JSON.stringify(e))}`);
 		});
 
 		ws.onAny((e) => {
-			console.log(`[SOCKET] Got event "${e}" `);
+			console.info(`[SOCKET] Got event "${e}" `);
 		});
 
 		ws.on('disconnect', () => {
@@ -124,17 +132,23 @@
 	}
 </script>
 
+<svelte:head>
+	<title>Playing as {notHost ? 'Player' : 'Host'} | {data.games[data.game]}</title>
+</svelte:head>
 {#if !loading}
 	<section class="grid place-items-center px-4 py-12">
 		<div class="min-h-screen">
-			<div class="max-w-lg text-center">
-				{JSON.stringify(PLAYER)}
+			<div class="mb-5 max-w-lg text-center">
 				<div class="grid place-items-center">
 					<h1 class="text-4xl font-bold leading-relaxed">Guess the prompt!<br />(*￣3￣)╭</h1>
 					<p class="py-4 text-sm opacity-90">
 						Lorem ipsum dolor, sit amet consectetur adipisicing elit. Corporis delectus voluptatum
 						quibusdam dicta! Tempore incidunt eius enim nihil beatae exercitationem, itaque in sunt
 						doloremque nemo optio, tempora numquam fugiat nobis?
+					</p>
+					<hr />
+					<p class="py-2 text-sm font-bold tracking-wide opacity-85">
+						Playing Against:- {PLAYER.id}
 					</p>
 				</div>
 			</div>

@@ -22,13 +22,16 @@
 	});
 </script>
 
+<svelte:head>
+	<title>Choose a Minimal Text Games!</title>
+</svelte:head>
 <section class="grid min-h-screen place-items-center px-3 py-10">
 	<div class="-mt-5 px-4">
-		<div class="grid grid-cols-1 gap-5 lg:grid-cols-2">
+		<div class="my-20 grid grid-cols-1 gap-5 lg:grid-cols-2">
 			<!-- Games Card -->
 			{#each games as game (game.id)}
 				<div>
-					<a href={`/game/${game.id}/start`} class="group cursor-pointer">
+					<a href={`/game/${game.id}/start`} class="group w-full cursor-pointer">
 						<Card.Root
 							class="contrast-105 h-fit w-full bg-background transition-transform hover:scale-105"
 						>

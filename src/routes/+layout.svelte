@@ -39,6 +39,10 @@
 	});
 </script>
 
+<svelte:head>
+	<title>Minimal Text Games!</title>
+</svelte:head>
+
 <ContextMenu.Root>
 	<ContextMenu.Trigger>
 		<header>
@@ -46,7 +50,7 @@
 			<Toaster />
 		</header>
 		{#if isProjectReady()}
-			<main class="mt-[7rem]">
+			<main class="mt-[7.5rem] px-3 py-6">
 				<slot />
 			</main>
 		{:else}

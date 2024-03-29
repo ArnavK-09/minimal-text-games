@@ -1,10 +1,12 @@
 <script lang="ts">
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Input from '$lib/components/ui/input/input.svelte';
+	import { test } from '$lib/gemini';
+	import { randomNumber, updateUserScore } from '$lib/userScores';
 
 	type ChatEntry = {
 		from: 'bot' | 'player';
-		content: String;
+		content: string;
 	};
 
 	let history: ChatEntry[] = [
@@ -16,8 +18,11 @@
 
 	let user_input: string = '';
 	let loading = false;
+	export let data: any;
+	export let notHost: boolean = false;
 
 	function submit_user_entry() {
+		console.log(test());
 		if (user_input.trim().length == 0) return;
 		loading = true;
 		history = [
@@ -28,9 +33,14 @@
 			}
 		];
 		loading = false;
+		user_input = '';
+		updateUserScore(randomNumber(150, 1));
 	}
 </script>
 
+<svelte:head>
+	<title>Playing as {notHost ? 'Player' : 'Host'} | {data.games[data.game]}</title>
+</svelte:head>
 <section class="mt-16 grid w-screen place-items-center overflow-x-hidden">
 	<div
 		class="mx-auto block min-h-screen max-w-[70%] break-words rounded-lg text-center shadow-lg contrast-125"

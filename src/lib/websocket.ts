@@ -23,7 +23,7 @@ interface Results {
 	scores: PlayerResult[];
 }
 
-process.on('unhandledRejection', (e) => console.log(e));
+process.on('unhandledRejection', (e) => console.error(e));
 
 // vite ws handler
 export default {
@@ -36,9 +36,6 @@ export default {
 
 		// on connection
 		io.on('connection', (socket) => {
-			// log
-			console.log(`Client Connected with ID:- ${socket.id}`);
-
 			// on text-game player entry submission
 			socket.on(
 				'updateUserEntry',
@@ -59,52 +56,73 @@ export default {
 						});
 					}
 
-					if (GAME.hostEntry && GAME.againstEntry) {
-						io.emit('resultsPublished', {
-							gameID: data.gameID,
-							winner: GAME.host,
-							looser: GAME.against,
-							game: GAME.game,
-							scores: [
-								{
-									pos: 1,
-									name: GAME.host,
-									accuracy: 1,
-									score: 1,
-									role: 'host'
+					try {
+						if (GAME.host == user) {
+							await prisma.game.update({
+								where: {
+									id: GAME.id
+								},
+								data: {
+									hostEntry: data.ENTRY_VALUE
 								}
-							]
-						} as Results);
-					} else if (GAME.host == user) {
-						console.log('host', data);
-						await prisma.game.update({
-							where: {
-								id: GAME.id
-							},
-							data: {
-								hostEntry: data.ENTRY_VALUE
-							}
-						});
-						io.emit('notifyPlayer', {
-							message: 'Other player just submitted their entry...Waiting for your submission...',
+							});
+							io.emit('notifyPlayer', {
+								message: 'Host player just submitted their entry...Waiting for your submission...',
+								gameID: gameID,
+								userID: data.against
+							});
+						} else if (GAME.host !== user) {
+							await prisma.game.update({
+								where: {
+									id: GAME.id
+								},
+								data: {
+									againstEntry: data.ENTRY_VALUE
+								}
+							});
+							io.emit('notifyPlayer', {
+								message: 'Other player just submitted their entry...Waiting for your submission...',
+								gameID: gameID,
+								userID: GAME.host
+							});
+						}
+					} catch {
+						io.emit('serverError', {
 							gameID: gameID,
-							userID: data.against
+							message: 'Internal error...'
 						});
-					} else if (GAME.host !== user) {
-						console.log('against', data);
-						await prisma.game.update({
-							where: {
-								id: GAME.id
-							},
-							data: {
-								againstEntry: data.ENTRY_VALUE
-							}
-						});
-						io.emit('notifyPlayer', {
-							message: 'Other player just submitted their entry...Waiting for your submission...',
-							gameID: gameID,
-							userID: GAME.host
-						});
+					} finally {
+						if (GAME.hostEntry && GAME.againstEntry) {
+							io.emit('resultsPublished', {
+								gameID: data.gameID,
+								winner: GAME.host,
+								looser: GAME.against,
+								game: GAME.game,
+								scores: [
+									{
+										pos: 1,
+										name: GAME.host,
+										accuracy: 1,
+										score: 1,
+										role: 'host'
+									},
+									{
+										pos: 2,
+										name: GAME.against,
+										accuracy: 1,
+										score: 1,
+										role: 'against'
+									}
+								]
+							} as Results);
+
+							await prisma.game.delete({
+								where: {
+									id: GAME.id,
+									code: gameID
+								}
+							});
+						}
 					}
 				}
 			);
@@ -170,6 +188,7 @@ export default {
 						gameID: gameID,
 						user: userID,
 						game,
+						meta: 'TOOD',
 						player: {
 							id: GAME.host
 						}
@@ -179,6 +198,7 @@ export default {
 						gameID: gameID,
 						user: GAME.host,
 						game,
+						meta: 'TOOD',
 						player: {
 							id: userID
 						}
@@ -187,7 +207,7 @@ export default {
 			});
 
 			socket.on('close', () => {
-				console.log(`Client Disconnected with ID:- ${socket.id}`);
+				console.info(`Client Disconnected with ID:- ${socket.id}`);
 			});
 		});
 	}

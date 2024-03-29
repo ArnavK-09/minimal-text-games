@@ -14,11 +14,15 @@
 	export let data;
 </script>
 
+<svelte:head>
+	<title>Start Minimal Text Game Room!</title>
+</svelte:head>
 <section class="grid h-screen place-items-center">
 	<div class="min-h-[16rem] md:w-[32rem]">
 		<form method="POST">
 			<Label>Game server code (5 characters only)</Label>
 			<Input
+				required
 				name="code"
 				value={nanoid(5)}
 				class="h-12 text-center text-xl"

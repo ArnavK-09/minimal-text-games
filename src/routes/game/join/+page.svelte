@@ -11,11 +11,19 @@
 	export let form: ActionData;
 </script>
 
+<svelte:head>
+	<title>Join Minimal Text Game Room!</title>
+</svelte:head>
 <section class="grid h-screen place-items-center">
 	<div class="min-h-[16rem] min-w-full px-4">
 		<form method="POST">
 			<Label>Enter Game server code to join</Label>
-			<Input name="code" class="h-12 text-center text-xl" placeholder="game server code..." />
+			<Input
+				required
+				name="code"
+				class="h-12 text-center text-xl"
+				placeholder="game server code..."
+			/>
 			<br />
 			{#if form?.error}
 				<Alert.Root variant="destructive">

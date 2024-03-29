@@ -17,11 +17,13 @@
 	interface Results {
 		winner: string;
 		looser: string;
+		addedScore: number;
 		game: string;
 		scores: PlayerResult[];
 	}
 
 	let results_data: Results;
+	export let data;
 
 	onMount(() => {
 		try {
@@ -39,6 +41,10 @@
 		}
 	});
 </script>
+
+<svelte:head>
+	<title>Checkout results of your gaming session!</title>
+</svelte:head>
 
 {#if !loading}
 	<section class="mt-3 grid place-items-center py-20">
@@ -68,9 +74,15 @@
 								<Table.Cell class="font-medium">{player.name}</Table.Cell>
 								<Table.Cell>{player.accuracy}</Table.Cell>
 								<Table.Cell>++{player.score}</Table.Cell>
-								<Table.Cell class="text-right font-bold capitalize"
-									>{player.role ?? 'player'}</Table.Cell
-								>
+								<Table.Cell class="text-right font-bold capitalize">
+									{#if player.name == data.userID}
+										You
+									{:else if player.role == 'host'}
+										Host
+									{:else}
+										Player
+									{/if}
+								</Table.Cell>
 							</Table.Row>
 						{/each}
 					</Table.Body>
