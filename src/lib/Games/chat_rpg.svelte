@@ -23,6 +23,16 @@
 		submit_user_entry(RPG_PROMPT, false);
 	});
 
+	function scrollInto() {
+		if (window) {
+			const container = window.document.getElementById('CHATS') as HTMLDivElement;
+			const last = Array.from(container?.children);
+			if (last) {
+				console.log(last);
+			}
+		}
+	}
+
 	async function submit_user_entry(
 		entry: string | MouseEvent = user_input,
 		addPlayerContent = true
@@ -30,7 +40,12 @@
 		const message = entry.toString() as string;
 		if (message.trim().length == 0) return;
 		loading = true;
-		const response = await contactGemini(message);
+		const response = await contactGemini(message).catch(() => {
+			loading = false;
+			if (window) {
+				return window.location.reload();
+			}
+		});
 		const newhistory = [
 			...history,
 			await (async () => {
@@ -43,11 +58,12 @@
 			})(),
 			{
 				from: 'bot',
-				content: await marked.parse(response.trim())
+				content: await marked.parse(response!.toString().trim())
 			}
 		];
 		history = newhistory.filter((x) => x !== null) as ChatEntry[];
 		loading = false;
+		scrollInto();
 		user_input = '';
 		updateUserScore(randomNumber(150, 1));
 	}
@@ -70,13 +86,16 @@
 		class="mx-auto block min-h-screen max-w-[70%] break-words rounded-lg text-center shadow-lg contrast-125"
 	>
 		<div>
-			<h1 class="my-4 text-4xl font-bold leading-relaxed opacity-90">Chat Game - RPG!</h1>
+			<h1 class="my-4 text-4xl font-bold leading-relaxed opacity-90">
+				Chat Game - RPG!<br />(BWOKEN)
+			</h1>
 		</div>
 		<div
 			class="flex h-[50vh] max-h-[50vh] w-full max-w-[177%] flex-col overflow-y-scroll rounded-xl bg-white/5 py-4"
 		>
 			{#each history.filter((x) => x !== null) as chat}
 				<div
+					id="CHATS"
 					class={`${chat.from == 'bot' ? '' : 'float-right brightness-110'} text-md w-[90% ] prose prose-sm prose-invert mx-4 my-2 justify-center break-words rounded-2xl bg-primary-foreground px-4 py-2 font-semibold`}
 				>
 					{@html chat.content}

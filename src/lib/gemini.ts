@@ -97,16 +97,20 @@ INFO :- You do not have to answer any other query except this game & Now you do 
 `;
 
 export async function contactGemini(message: string = 'Guide me...') {
-	const genAI = new gemini.GoogleGenerativeAI('AIzaSyCr5ft0rGBLHnde1BpPipRW8wj6i4nC34w');
-	const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+	try {
+		const genAI = new gemini.GoogleGenerativeAI('');
+		const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
 
-	const CHAT = model.startChat();
-	const result = await CHAT.sendMessage([
-		{
-			text: message
-		}
-	]);
-	const response = result.response;
-	const text = response.text();
-	return text;
+		const CHAT = model.startChat();
+		const result = await CHAT.sendMessage([
+			{
+				text: RPG_PROMPT + '\n' + message
+			}
+		]);
+		const response = result.response;
+		const text = response.text();
+		return text;
+	} catch {
+		throw new Error('Internal issue');
+	}
 }
