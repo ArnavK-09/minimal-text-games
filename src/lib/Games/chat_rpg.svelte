@@ -2,10 +2,12 @@
 	import Loader from '$lib/components/Loader.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Input from '$lib/components/ui/input/input.svelte';
-	import { RPG_PROMPT, contactGemini } from '$lib/gemini';
+	import { RPG_PROMPT } from '$lib/utils';
 	import { randomNumber, updateUserScore } from '$lib/userScores';
 	import { marked } from 'marked';
 	import { onMount } from 'svelte';
+	import { env } from '$env/dynamic/public';
+
 
 	type ChatEntry = {
 		from: 'bot' | 'player';
@@ -31,6 +33,10 @@
 				console.log(last);
 			}
 		}
+	}
+
+	const contactGemini = async(message: string) => {
+		return fetch(`/api/gemini?query=${(message)}`).then(e => e.text())
 	}
 
 	async function submit_user_entry(
@@ -87,7 +93,7 @@
 	>
 		<div>
 			<h1 class="my-4 text-4xl font-bold leading-relaxed opacity-90">
-				Chat Game - RPG!<br />(BWOKEN)
+				Chat Game - RPG!<br />(BWOKEN)}
 			</h1>
 		</div>
 		<div
