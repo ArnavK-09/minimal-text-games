@@ -1,6 +1,6 @@
 // imports
 import flagsmith from '$lib/flagsmith.js';
-import prisma from '$lib/prisma.js';
+import prisma from '$lib/server/prisma.js';
 import type { Actions } from './$types.js';
 import { fail, redirect } from '@sveltejs/kit';
 

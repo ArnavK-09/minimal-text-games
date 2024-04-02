@@ -76,7 +76,7 @@
 		});
 
 		ws.on('statusUpdate', (e) => {
-			if (e.gameID == data.gameID && e.user == data.userID) {
+			if (e.gameID == data.gameID && e.userID == data.userID) {
 				if (e.status == 'waiting') {
 					status = 'Waiting for other player to connect...';
 				}

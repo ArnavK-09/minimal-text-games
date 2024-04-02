@@ -41,7 +41,7 @@
 	let PLAYER: Player;
 	let loading = true;
 	let ws: Socket;
-	let TXT = 'OWO';
+	let TXT = 'No message sent from server...';
 
 	const startGame = (player: Player, text: string) => {
 		PLAYER = player;
@@ -75,8 +75,8 @@
 			}
 		});
 
-		ws.on('statusUpdate', (e) => {
-			if (e.gameID == data.gameID && e.user == data.userID) {
+		ws.on('statusUpdate', (e: any) => {
+			if (e.gameID == data.gameID && e.userID == data.userID) {
 				if (e.status == 'waiting') {
 					status = 'Waiting for other player to connect...';
 				}
@@ -152,7 +152,7 @@
 				<div class="w-full p-1">
 					<Card.Root class="w-full bg-background opacity-95">
 						<Card.Content class="flex w-full items-center justify-center break-words p-3">
-							<h3 class="break-words text-center text-2xl font-bold tracking-wide">
+							<h3 class="break-words text-center text-2xl font-bold capitalize tracking-wide">
 								{TXT}
 							</h3>
 						</Card.Content>

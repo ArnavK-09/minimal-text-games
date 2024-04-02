@@ -55,7 +55,6 @@ export const flyAndScale = (
 	};
 };
 
-
 /**
  * //makeuseof.com/how-to-use-chatgpt-as-an-interactive-rpg/
  */

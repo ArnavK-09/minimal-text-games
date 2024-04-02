@@ -30,6 +30,7 @@
 			results_data = JSON.parse(
 				decodeURIComponent($page.url.searchParams.get('data') ?? '')
 			) satisfies Results;
+			console.log(results_data);
 			if ($page.data.userID == results_data.winner) {
 				pos = 'Won';
 			} else {

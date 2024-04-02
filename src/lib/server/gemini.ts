@@ -1,4 +1,4 @@
-// imports 
+// imports
 import * as gemini from '@google/generative-ai';
 import { GEMINI_API_KEY } from '$env/static/private';
 import { RPG_PROMPT } from '$lib/utils';

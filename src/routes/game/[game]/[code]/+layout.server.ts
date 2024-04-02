@@ -2,7 +2,7 @@
 import { error } from '@sveltejs/kit';
 import type { RequestEvent } from './$types';
 import flagsmith from '$lib/flagsmith';
-import prisma from '$lib/prisma';
+import prisma from '$lib/server/prisma';
 
 // games list
 const envFlags = await flagsmith.getEnvironmentFlags();

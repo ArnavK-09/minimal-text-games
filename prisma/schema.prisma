@@ -8,12 +8,13 @@ datasource db {
 }
 
 model Game {
-  id           String  @id @default(auto()) @map("_id") @db.ObjectId
-  code         String  @unique
-  host         String
-  against      String?
-  game         String
-  hostEntry    String?
-  againstEntry String?
-  meta         String?
+  id             String  @id @default(auto()) @map("_id") @db.ObjectId
+  code           String  @unique
+  host           String
+  against        String?
+  game           String
+  hostEntry      String?
+  againstEntry   String?
+  expectedResult String?
+  meta           String?
 }

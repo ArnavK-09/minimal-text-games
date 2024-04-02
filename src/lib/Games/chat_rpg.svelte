@@ -6,8 +6,6 @@
 	import { randomNumber, updateUserScore } from '$lib/userScores';
 	import { marked } from 'marked';
 	import { onMount } from 'svelte';
-	import { env } from '$env/dynamic/public';
-
 
 	type ChatEntry = {
 		from: 'bot' | 'player';
@@ -35,9 +33,9 @@
 		}
 	}
 
-	const contactGemini = async(message: string) => {
-		return fetch(`/api/gemini?query=${(message)}`).then(e => e.text())
-	}
+	const contactGemini = async (message: string) => {
+		return fetch(`/api/gemini?query=${message}`).then((e) => e.text());
+	};
 
 	async function submit_user_entry(
 		entry: string | MouseEvent = user_input,

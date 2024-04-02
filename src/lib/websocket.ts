@@ -1,21 +1,25 @@
 // imports
-import prisma from './prisma';
+import prisma from './server/prisma';
 import { Server } from 'socket.io';
+import owoify from 'owoify-js';
+import { findAcuracy, genImage, randomSentence } from './server/openai';
+import type { Game } from '@prisma/client';
 
 // base payload of ws input
-type wsPayload = {
+export type gamesT = 'guess_the_prompt' | 'owoify_text';
+export type wsPayload = {
 	gameID: string;
 	userID: string;
-	game: 'guess_the_prompt' | 'owoify_text';
+	game: gamesT;
 };
-type PlayerResult = {
+export type PlayerResult = {
 	pos: number;
 	name: string;
-	accuracy: number;
-	score: number;
+	accuracy: number | string;
+	score: number | string;
 	role: 'host' | 'against';
 };
-interface Results {
+export interface Results {
 	gameID: string;
 	winner: string;
 	looser: string;
@@ -23,9 +27,135 @@ interface Results {
 	scores: PlayerResult[];
 }
 
+export type GameMetaQuestion = {
+	expected: string;
+	question: string;
+};
+
+const genGameResult = async ({
+	expectedSentence,
+	hostSentence,
+	againstSentence,
+	game
+}: {
+	expectedSentence: string;
+	hostSentence: string;
+	againstSentence: string;
+	game: Game;
+}): Promise<PlayerResult[]> => {
+	const results: PlayerResult[] = [];
+	const hostRes = await findAcuracy(expectedSentence, hostSentence);
+	const againstRes = await findAcuracy(expectedSentence, againstSentence);
+
+	results.push({
+		pos: hostRes.score > againstRes.score ? 1 : 2,
+		name: game.host,
+		accuracy: hostRes.accuracy,
+		score: hostRes.score,
+		role: 'host'
+	});
+
+	results.push({
+		pos: againstRes.score > hostRes.score ? 1 : 2,
+		name: game.host,
+		accuracy: againstRes.accuracy,
+		score: againstRes.score,
+		role: 'against'
+	});
+
+	return results;
+};
+
+// const DEP_GAMES_RESULTS: {
+// 	owoify_text: ({
+// 		expectedSentence,
+// 		hostSentence,
+// 		againstSentence,
+// 		game
+// 	}: {
+// 		expectedSentence: string;
+// 		hostSentence: string;
+// 		againstSentence: string;
+// 		game: Game;
+// 	}) => PlayerResult[];
+// 	guess_the_prompt: ({
+// 		expectedSentence,
+// 		hostSentence,
+// 		againstSentence,
+// 		game
+// 	}: {
+// 		expectedSentence: string;
+// 		hostSentence: string;
+// 		againstSentence: string;
+// 		game: Game;
+// 	}) => PlayerResult[];
+// } = {
+// 	owoify_text: ({ expectedSentence, hostSentence, againstSentence, game }) => {
+// 		return [
+// 			{
+// 				pos: 1,
+// 				name: game.host,
+// 				accuracy: 1,
+// 				score: 1,
+// 				role: 'host'
+// 			},
+// 			{
+// 				pos: 2,
+// 				name: game.against!.toString(),
+// 				accuracy: 1,
+// 				score: 1,
+// 				role: 'against'
+// 			}
+// 		];
+// 	},
+// 	guess_the_prompt: () => {
+// 		return [
+// 			{
+// 				pos: 1,
+// 				name: 'hi',
+// 				accuracy: 1,
+// 				score: 1,
+// 				role: 'host'
+// 			},
+// 			{
+// 				pos: 2,
+// 				name: 'hi',
+// 				accuracy: 1,
+// 				score: 1,
+// 				role: 'against'
+// 			}
+// 		];
+// 	}
+// };
+
+const GAMES_META: {
+	owoify_text: () => Promise<GameMetaQuestion>;
+	guess_the_prompt: () => Promise<GameMetaQuestion>;
+} = {
+	owoify_text: async () => {
+		const sentence = await randomSentence();
+		// @ts-expect-error - wrong types imported
+		const res = owoify.default(sentence, 'uvu');
+
+		return {
+			expected: sentence,
+			question: res
+		};
+	},
+	guess_the_prompt: async () => {
+		const data = await genImage();
+		return {
+			expected: data.title,
+			question: data.image.toString()
+		};
+	}
+};
+
+/**
+ * Err Handler
+ */
 process.on('unhandledRejection', (e) => console.error(e));
 
-// vite ws handler
 export default {
 	name: 'webSocketServer',
 	configureServer(server: any) {
@@ -93,27 +223,19 @@ export default {
 						});
 					} finally {
 						if (GAME.hostEntry && GAME.againstEntry) {
+							const results: PlayerResult[] = await genGameResult({
+								expectedSentence: GAME.expectedResult!,
+								hostSentence: GAME.hostEntry,
+								againstSentence: GAME.againstEntry,
+								game: GAME
+							});
+
 							io.emit('resultsPublished', {
 								gameID: data.gameID,
-								winner: GAME.host,
-								looser: GAME.against,
+								winner: results.find((x) => x.pos == 1) ?? GAME.host,
+								looser: results.find((x) => x.pos == 2) ?? GAME.against,
 								game: GAME.game,
-								scores: [
-									{
-										pos: 1,
-										name: GAME.host,
-										accuracy: 1,
-										score: 1,
-										role: 'host'
-									},
-									{
-										pos: 2,
-										name: GAME.against,
-										accuracy: 1,
-										score: 1,
-										role: 'against'
-									}
-								]
+								scores: results
 							} as Results);
 
 							await prisma.game.delete({
@@ -150,9 +272,9 @@ export default {
 					socket.emit('statusUpdate', {
 						status: 'waiting',
 						gameID: id,
-						user,
+						userID: user,
 						game
-					});
+					} as wsPayload);
 				}
 			});
 			// on join game
@@ -174,34 +296,50 @@ export default {
 						message: 'No game found with that code...'
 					});
 				} else {
+					const GAME_DATA: GameMetaQuestion =
+						typeof GAMES_META[game] == 'function'
+							? await GAMES_META[game]()
+							: ({ question: 'Internal error....' } as GameMetaQuestion);
+
 					await prisma.game.update({
 						where: {
 							code: gameID,
 							game: game
 						},
 						data: {
-							against: userID
+							against: userID,
+							expectedResult: GAME_DATA.expected.toString()
 						}
 					});
 					socket.emit('statusUpdate', {
 						status: 'player_joined',
 						gameID: gameID,
-						user: userID,
+						userID: userID,
 						game,
-						meta: 'TOOD',
+						meta: GAME_DATA.question,
 						player: {
 							id: GAME.host
 						}
+					} as wsPayload & {
+						meta: string;
+						player: {
+							id: string;
+						};
 					});
 					io.emit('statusUpdate', {
 						status: 'player_joined',
 						gameID: gameID,
-						user: GAME.host,
+						userID: GAME.host,
 						game,
-						meta: 'TOOD',
+						meta: GAME_DATA.question,
 						player: {
 							id: userID
 						}
+					} as wsPayload & {
+						meta: string;
+						player: {
+							id: string;
+						};
 					});
 				}
 			});
