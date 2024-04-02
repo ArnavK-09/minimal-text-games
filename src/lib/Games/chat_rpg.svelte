@@ -44,11 +44,12 @@
 		const message = entry.toString() as string;
 		if (message.trim().length == 0) return;
 		loading = true;
-		const response = await contactGemini(message).catch(() => {
+		const response: string = await contactGemini(message).catch(() => {
 			loading = false;
 			if (window) {
-				return window.location.reload();
+				window.location.reload();
 			}
+			return 'Error';
 		});
 		const newhistory = [
 			...history,
@@ -91,7 +92,7 @@
 	>
 		<div>
 			<h1 class="my-4 text-4xl font-bold leading-relaxed opacity-90">
-				Chat Game - RPG!<br />(BWOKEN)}
+				Chat Game - RPG!<br />(BWOKEN)
 			</h1>
 		</div>
 		<div

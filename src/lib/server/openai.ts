@@ -2,7 +2,8 @@
  * Imports
  */
 import OpenAI from 'openai';
-import { OPENAI_API_KEY } from '$env/static/private';
+import { RPG_PROMPT } from '$lib/utils';
+// import { OPENAI_API_KEY } from '$env/static/private';
 
 /**
  * Custom config
@@ -13,7 +14,7 @@ const HOST = 'https://api.naga.ac/v1'; // custom host for deploying
  * New open ai client
  */
 const openai = new OpenAI({
-	apiKey: OPENAI_API_KEY,
+	// apiKey: OPENAI_API_KEY,
 	baseURL: HOST
 });
 
@@ -84,3 +85,14 @@ export const genImage = async (): Promise<{ image: string; title: string }> => {
 		title: imgPrompt
 	};
 };
+
+/**
+ * For chat RPG
+ */
+export async function contactRPG(message: string = 'Guide me...') {
+	const chatCompletion = await openai.chat.completions.create({
+		messages: [{ role: 'user', content: RPG_PROMPT + '\n' + message }],
+		model: 'gpt-3.5-turbo'
+	});
+	return chatCompletion.choices[0].message.content ?? 'Internal Issue...';
+}

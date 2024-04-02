@@ -11,3 +11,4 @@ vite.config.ts.timestamp-*
 test
 /src/lib/components/ui
 .vercel
+package-lock.json
