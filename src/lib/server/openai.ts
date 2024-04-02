@@ -14,7 +14,7 @@ const HOST = 'https://api.naga.ac/v1'; // custom host for deploying
  * New open ai client
  */
 const openai = new OpenAI({
-	// apiKey: OPENAI_API_KEY,
+	apiKey: import.meta.env.OPENAI_API_KEY,
 	baseURL: HOST
 });
 
