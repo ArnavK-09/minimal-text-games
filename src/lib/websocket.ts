@@ -48,7 +48,7 @@ const genGameResult = async ({
 	const againstRes = await findAcuracy(expectedSentence, againstSentence);
 
 	results.push({
-		pos: hostRes.score > againstRes.score ? 1 : 2,
+		pos: hostRes.score >= againstRes.score ? 1 : 2,
 		name: game.host,
 		accuracy: hostRes.accuracy,
 		score: hostRes.score,
@@ -56,8 +56,8 @@ const genGameResult = async ({
 	});
 
 	results.push({
-		pos: againstRes.score > hostRes.score ? 1 : 2,
-		name: game.host,
+		pos: results[0].pos == 1 ? 2 : 1,
+		name: game.against,
 		accuracy: againstRes.accuracy,
 		score: againstRes.score,
 		role: 'against'
@@ -124,65 +124,79 @@ export default {
 						});
 					}
 
-					try {
-						if (GAME.host == user) {
-							await prisma.game.update({
+					const checkRes = async () => {
+						const GaME = await prisma.game.findUnique({
+							where: {
+								code: gameID,
+								game: game
+							}
+						});
+						if (GaME.hostEntry && GaME.againstEntry) {
+							const results: PlayerResult[] = await genGameResult({
+								expectedSentence: GaME.expectedResult!,
+								hostSentence: GaME.hostEntry,
+								againstSentence: GaME.againstEntry,
+								game: GaME
+							});
+
+							io.emit('resultsPublished', {
+								gameID: data.gameID,
+								winner: results.find((x) => x.pos == 1) ?? GaME.host,
+								looser: results.find((x) => x.pos == 2) ?? GaME.against,
+								game: GaME.game,
+								scores: results
+							} as Results);
+
+							await prisma.game.delete({
+								where: {
+									id: GaME.id,
+									code: gameID
+								}
+							});
+						}
+					};
+
+					if (GAME.host == user) {
+						prisma.game
+							.update({
 								where: {
 									id: GAME.id
 								},
 								data: {
 									hostEntry: data.ENTRY_VALUE
 								}
+							})
+							.then(() => {
+								checkRes();
+								io.emit('notifyPlayer', {
+									message:
+										'Host player just submitted their entry...Waiting for your submission...',
+									gameID: gameID,
+									userID: data.against
+								});
 							});
-							io.emit('notifyPlayer', {
-								message: 'Host player just submitted their entry...Waiting for your submission...',
-								gameID: gameID,
-								userID: data.against
-							});
-						} else if (GAME.host !== user) {
-							await prisma.game.update({
+
+						checkRes();
+					} else {
+						prisma.game
+							.update({
 								where: {
 									id: GAME.id
 								},
 								data: {
 									againstEntry: data.ENTRY_VALUE
 								}
+							})
+							.then(() => {
+								checkRes();
+								io.emit('notifyPlayer', {
+									message:
+										'Host player just submitted their entry...Waiting for your submission...',
+									gameID: gameID,
+									userID: data.against
+								});
 							});
-							io.emit('notifyPlayer', {
-								message: 'Other player just submitted their entry...Waiting for your submission...',
-								gameID: gameID,
-								userID: GAME.host
-							});
-						}
-					} catch {
-						io.emit('serverError', {
-							gameID: gameID,
-							message: 'Internal error...'
-						});
-					} finally {
-						if (GAME.hostEntry && GAME.againstEntry) {
-							const results: PlayerResult[] = await genGameResult({
-								expectedSentence: GAME.expectedResult!,
-								hostSentence: GAME.hostEntry,
-								againstSentence: GAME.againstEntry,
-								game: GAME
-							});
-
-							io.emit('resultsPublished', {
-								gameID: data.gameID,
-								winner: results.find((x) => x.pos == 1) ?? GAME.host,
-								looser: results.find((x) => x.pos == 2) ?? GAME.against,
-								game: GAME.game,
-								scores: results
-							} as Results);
-
-							await prisma.game.delete({
-								where: {
-									id: GAME.id,
-									code: gameID
-								}
-							});
-						}
+						checkRes();
 					}
 				}
 			);

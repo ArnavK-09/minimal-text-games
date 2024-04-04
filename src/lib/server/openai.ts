@@ -143,7 +143,6 @@ export const findAcuracy = async (
 	});
 	const res: string = chatCompletion.choices[0].message.content ?? '50||6.9';
 	const results = res.split('||');
-	console.log(res);
 	return {
 		score: results[0],
 		accuracy: results[1]

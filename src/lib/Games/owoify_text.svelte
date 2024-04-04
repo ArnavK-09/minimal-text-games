@@ -94,6 +94,7 @@
 				toast.info('From Server', {
 					description: e.message ?? 'Other player just submitted their entry'
 				});
+				status = 'Processing Results... Please wait some seconds...';
 			}
 		});
 

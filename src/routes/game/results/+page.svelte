@@ -30,7 +30,6 @@
 			results_data = JSON.parse(
 				decodeURIComponent($page.url.searchParams.get('data') ?? '')
 			) satisfies Results;
-			console.log(results_data);
 			if ($page.data.userID == results_data.winner) {
 				pos = 'Won';
 			} else {
@@ -49,15 +48,15 @@
 
 {#if !loading}
 	<section class="mt-3 grid place-items-center py-20">
-		<div class="min-h-screen">
+		<div class="min-h-screen w-[90vw] md:w-auto">
 			<div class="max-w-lg text-center">
 				<h1 class="text-4xl font-bold leading-5">Game Results!</h1>
 				<h2 class="my-3 py-4 text-sm opacity-95 brightness-105">
 					Game Played:- <strong>{results_data.game ?? 'Minimal Text Game'}</strong>
 				</h2>
 			</div>
-			<div>
-				<Table.Root class="overflow-x-scroll">
+			<div class="overflow-x-scroll">
+				<Table.Root>
 					<Table.Caption>Players ranked by their score and accuracy</Table.Caption>
 					<Table.Header>
 						<Table.Row>
@@ -69,7 +68,8 @@
 						</Table.Row>
 					</Table.Header>
 					<Table.Body>
-						{#each results_data.scores ?? [] as player, i}
+						{@const playerS = results_data.scores.sort((a, b) => a.pos - b.pos)}
+						{#each playerS ?? [] as player, i}
 							<Table.Row>
 								<Table.Cell class="font-extrabold"># {player.pos ?? i}</Table.Cell>
 								<Table.Cell class="font-medium">{player.name}</Table.Cell>
@@ -99,7 +99,7 @@
 							viewBox="0 0 24 24"
 							stroke-width="1.5"
 							stroke="currentColor"
-							class="my-6 aspect-square h-[20vh] scale-105 rounded-full bg-white/5 p-2"
+							class="my-6 aspect-square h-[15vh] scale-105 rounded-full bg-white/5 p-2 md:h-[20vh]"
 						>
 							<path
 								stroke-linecap="round"
@@ -109,7 +109,9 @@
 						</svg>
 					</div>
 				</div>
-				<h1 class="text-6xl font-bold leading-5 underline decoration-wavy underline-offset-8">
+				<h1
+					class="text-4xl font-bold leading-5 underline decoration-wavy underline-offset-8 md:text-6xl"
+				>
 					You {pos}!
 				</h1>
 			</div>

@@ -15,10 +15,12 @@
 	<title>Join Minimal Text Game Room!</title>
 </svelte:head>
 <section class="grid h-screen place-items-center">
-	<div class="min-h-[16rem] min-w-full px-4">
+	<div class="min-h-[16rem] w-full px-4 md:w-[50%]">
 		<form method="POST">
 			<Label>Enter Game server code to join</Label>
 			<Input
+				autocomplete="false"
+				spellcheck="false"
 				required
 				name="code"
 				class="h-12 text-center text-xl"

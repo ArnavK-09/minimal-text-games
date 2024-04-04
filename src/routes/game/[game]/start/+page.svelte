@@ -22,6 +22,8 @@
 		<form method="POST">
 			<Label>Game server code (5 characters only)</Label>
 			<Input
+				autocomplete="false"
+				spellcheck="false"
 				required
 				name="code"
 				value={nanoid(5)}
