@@ -34,7 +34,7 @@ Welcome to the exciting world of Minimal Text Games! Get ready for an immersive 
 
 
 
-**And more games are on the way! 🎉**
+<p align="center"><strong>And more games are on the way! 🎉</strong></p>
 
 ### 📹 Video Demo
 
@@ -91,9 +91,9 @@ Welcome to the exciting world of Minimal Text Games! Get ready for an immersive 
    npm run dev
    ```
 
-- Open your browser and navigate to `http://localhost:5173` to see the app in action.
+- Open your browser and navigate to [**` http://localhost:5173 `**](http://localhost:5173) to see the app in action.
 
---
+---
 
 ## 🧏‍♀️ Contributing
 
@@ -123,6 +123,7 @@ We welcome contributions to make Minimal Text Games even better! Here's how you 
 
 <p align="center"><strong>Thanks for checking out Minimal Text Games! Happy gaming! 👋</strong></p>
 
+---
 ---
 
 > [!CAUTION]
