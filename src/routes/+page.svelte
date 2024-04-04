@@ -20,7 +20,7 @@
 				AI driven minmal games for you!
 			</h1>
 			<p class="my-5 opacity-85">
-				Introducing our AI-powered player games, created with love! Our backend relies on Minds DB
+				Introducing our AI-powered player games, created with love! Our backend relies on Mongo DB
 				and Sockets to provide a full real-time gaming experience. With a wide variety of
 				captivating games to choose from, there's something for everyone. Dive into the world of
 				multiple games and let the excitement begin!

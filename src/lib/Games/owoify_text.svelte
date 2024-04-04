@@ -6,7 +6,7 @@
 	import { onMount } from 'svelte';
 	import { gameState } from '$lib/store';
 	import { goto } from '$app/navigation';
-	import ioClient, { Socket } from 'socket.io-client';
+	import ioClient, { type Socket } from 'socket.io-client';
 	import Loader from '$lib/components/Loader.svelte';
 	import { toast } from 'svelte-sonner';
 	import { updateUserScore } from '$lib/userScores';
