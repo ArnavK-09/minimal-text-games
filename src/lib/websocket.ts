@@ -141,8 +141,8 @@ export default {
 
 							io.emit('resultsPublished', {
 								gameID: data.gameID,
-								winner: results.find((x) => x.pos == 1) ?? GaME.host,
-								looser: results.find((x) => x.pos == 2) ?? GaME.against,
+								winner: results.find((x) => x.pos == 1).name ?? GaME.host,
+								looser: results.find((x) => x.pos == 2).name ?? GaME.against,
 								game: GaME.game,
 								scores: results
 							} as Results);

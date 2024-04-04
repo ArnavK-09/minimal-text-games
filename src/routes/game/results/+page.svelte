@@ -30,10 +30,10 @@
 			results_data = JSON.parse(
 				decodeURIComponent($page.url.searchParams.get('data') ?? '')
 			) satisfies Results;
-			if ($page.data.userID == results_data.winner) {
-				pos = 'Won';
-			} else {
+			if ($page.data.userID !== results_data.winner) {
 				pos = 'Loose';
+			} else {
+				pos = 'Won';
 			}
 			loading = false;
 		} catch (e: any) {
