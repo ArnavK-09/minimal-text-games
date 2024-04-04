@@ -19,9 +19,20 @@ Welcome to the exciting world of Minimal Text Games! Get ready for an immersive 
 
 > Here's a sneak peek at some of the games in action:
 
-| Decode Owo-ify Text | Guess the Image Prompt | Chat RPG |
-|----------------------|------------------------|----------|
-| ![Decode Owo-ify Text](https://via.placeholder.com/400x200) | ![Guess the Image Prompt](https://via.placeholder.com/400x200) | ![Chat RPG](https://via.placeholder.com/400x200) |
+
+| Guess the Prompt! [Multi Player] |
+|------------|
+| ![Demo](static/guess_the_prompt.jpeg) |
+
+| Decode owo-fied text! [Multi Player] |
+|------------|
+| ![Demo](static/owoify_text.jpeg) |
+
+| Chat RPG! [Single Player] |
+|------------|
+| ![Demo](static/chat_rpg.jpeg) |
+
+
 
 **And more games are on the way! 🎉**
 
@@ -31,7 +42,21 @@ Welcome to the exciting world of Minimal Text Games! Get ready for an immersive 
 
 | Video Demo |
 |------------|
-| [![Video Demo](https://via.placeholder.com/640x360)](https://youtu.be/dQw4w9WgXcQ) |
+| [![Video Demo](https://via.placeholder.com/640x360)](static) |
+
+
+### 🤼‍♂️ Addons
+
+> Here's a sneak peek at some addons to site
+
+| Content Menu |
+|------------|
+| ![Addon](static/context.jpeg) |
+
+| Flagsmith Notifications |
+|------------|
+| ![Addon](static/flagsmith.jpg) |
+
 
 ---
 
@@ -82,12 +107,19 @@ We welcome contributions to make Minimal Text Games even better! Here's how you 
 > 4. Push your changes to your forked repository.
 > 5. Submit a pull request to the main repository, describing your changes in detail.
 
+## 🏁 Flagsmith Config
+
+| Flagsmith Admin Panel |
+|------------|
+| ![Flagsmith](static/flagsmith.jpeg) |
+
+---
+
 ## 🌟 Show Your Support
 
 > [!TIP]
 > If you like Minimal Text Games, please consider giving it a ⭐️ on GitHub! Your support means a lot to us. 🙏
 
----
 
 <p align="center"><strong>Thanks for checking out Minimal Text Games! Happy gaming! 👋</strong></p>
 
