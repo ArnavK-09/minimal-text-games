@@ -17,7 +17,7 @@
 			<h1
 				class="bg-gradient-to-br from-gray-400 to-white bg-clip-text py-4 text-6xl font-extrabold text-transparent"
 			>
-				AI driven minmal games for you!
+				AI-driven Minimal Games for you!
 			</h1>
 			<p class="my-5 opacity-85">
 				Introducing our AI-powered player games, created with love! Our backend relies on Mongo DB
