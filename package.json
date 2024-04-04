@@ -5,7 +5,7 @@
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
-		"ui": "npx shadcn-svelte@latest add card alert alert-dialog button cardd context-menu input label sonner table textarea tooltip -y",
+		"ui": "npx shadcn-svelte@latest add card alert alert-dialog button card context-menu input label sonner table textarea tooltip -y",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
