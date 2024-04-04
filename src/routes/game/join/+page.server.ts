@@ -1,5 +1,5 @@
 // imports
-import prisma from '$lib/server/prisma.js';
+import prisma from '$lib/server/prisma';
 import type { Actions } from './$types.js';
 import { fail, redirect } from '@sveltejs/kit';
 

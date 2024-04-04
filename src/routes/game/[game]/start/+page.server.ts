@@ -1,7 +1,7 @@
 // imports
-import flagsmith from '$lib/flagsmith.js';
-import prisma from '$lib/server/prisma.js';
-import type { Actions } from './$types.js';
+import flagsmith from '$lib/flagsmith';
+import prisma from '$lib/server/prisma';
+import type { Actions } from './$types';
 import { fail, redirect } from '@sveltejs/kit';
 
 const envFlags = await flagsmith.getEnvironmentFlags();

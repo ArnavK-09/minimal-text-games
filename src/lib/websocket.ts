@@ -66,68 +66,6 @@ const genGameResult = async ({
 	return results;
 };
 
-// const DEP_GAMES_RESULTS: {
-// 	owoify_text: ({
-// 		expectedSentence,
-// 		hostSentence,
-// 		againstSentence,
-// 		game
-// 	}: {
-// 		expectedSentence: string;
-// 		hostSentence: string;
-// 		againstSentence: string;
-// 		game: Game;
-// 	}) => PlayerResult[];
-// 	guess_the_prompt: ({
-// 		expectedSentence,
-// 		hostSentence,
-// 		againstSentence,
-// 		game
-// 	}: {
-// 		expectedSentence: string;
-// 		hostSentence: string;
-// 		againstSentence: string;
-// 		game: Game;
-// 	}) => PlayerResult[];
-// } = {
-// 	owoify_text: ({ expectedSentence, hostSentence, againstSentence, game }) => {
-// 		return [
-// 			{
-// 				pos: 1,
-// 				name: game.host,
-// 				accuracy: 1,
-// 				score: 1,
-// 				role: 'host'
-// 			},
-// 			{
-// 				pos: 2,
-// 				name: game.against!.toString(),
-// 				accuracy: 1,
-// 				score: 1,
-// 				role: 'against'
-// 			}
-// 		];
-// 	},
-// 	guess_the_prompt: () => {
-// 		return [
-// 			{
-// 				pos: 1,
-// 				name: 'hi',
-// 				accuracy: 1,
-// 				score: 1,
-// 				role: 'host'
-// 			},
-// 			{
-// 				pos: 2,
-// 				name: 'hi',
-// 				accuracy: 1,
-// 				score: 1,
-// 				role: 'against'
-// 			}
-// 		];
-// 	}
-// };
-
 const GAMES_META: {
 	owoify_text: () => Promise<GameMetaQuestion>;
 	guess_the_prompt: () => Promise<GameMetaQuestion>;
