@@ -160,7 +160,7 @@ export const genImage = async (): Promise<{ image: string; title: string }> => {
 					{
 						role: 'user',
 						content:
-							'Type me a minimal single line PROMPT FOR DALLE IMAGE GENERATOR, at least 12 words, use simple filter too, make sure to use simple prompt that a user can guess by just looking at image, in pure english and no mistakes! Just respond with text nothing else.'
+							'Type me a minimal single line PROMPT FOR DALLE IMAGE GENERATOR, at least 12 words, make sure to use simple prompt that a user can guess by just looking at image, in pure english and no mistakes! Just respond with text nothing else.'
 					}
 				],
 				model: 'gpt-3.5-turbo'

@@ -1,6 +1,10 @@
 {
-	"name": "minimal-games",
-	"version": "0.0.1",
+	"name": "minimal-text-games",
+	"version": "0.0.0",
+	"author": {
+		"name": "ArnavK-09",
+		"email": "arnavkaushal09@gmail.com"
+	},
 	"private": true,
 	"scripts": {
 		"dev": "vite dev",

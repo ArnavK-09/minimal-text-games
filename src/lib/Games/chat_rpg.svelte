@@ -23,18 +23,8 @@
 		submit_user_entry(RPG_PROMPT, false);
 	});
 
-	function scrollInto() {
-		if (window) {
-			const container = window.document.getElementById('CHATS') as HTMLDivElement;
-			const last = Array.from(container?.children);
-			if (last) {
-				console.log(last);
-			}
-		}
-	}
-
 	const contactGemini = async (message: string) => {
-		return fetch(`/api/gemini?query=${message}`).then((e) => e.text());
+		return fetch(`/api/rpg?query=${message}`).then((e) => e.text());
 	};
 
 	async function submit_user_entry(
@@ -68,7 +58,6 @@
 		];
 		history = newhistory.filter((x) => x !== null) as ChatEntry[];
 		loading = false;
-		scrollInto();
 		user_input = '';
 		updateUserScore(randomNumber(150, 1));
 	}
