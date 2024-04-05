@@ -1,4 +1,4 @@
-# 🌀 Minimal Text Games 
+# 🌀 Minimal Text Games 🌀
 
 Welcome to the exciting world of Minimal Text Games! Get ready for an immersive gaming experience powered by cutting-edge AI technology. 🚀
 
@@ -40,7 +40,11 @@ Welcome to the exciting world of Minimal Text Games! Get ready for an immersive 
 
 > Want to see the games in action? Check out this video demo:
 
-| Video Demo |
+| Guess the Prompt! [Multi Player] |
+|------------|
+| [![Video Demo](https://via.placeholder.com/640x360)](static) |
+
+| Decode OwO-fied text! [Multi Player] |
 |------------|
 | [![Video Demo](https://via.placeholder.com/640x360)](static) |
 
