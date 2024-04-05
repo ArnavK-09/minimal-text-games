@@ -83,9 +83,13 @@ Welcome to the exciting world of Minimal Text Games! Get ready for an immersive 
    ```
 
 - Install dependencies:
-   ```
+   ```bash
    cd minimal-text-games
    npm install
+   ```
+- Install SHADCN components:
+   ```bash
+   npm run ui
    ```
 
 - Set up environment variables **{ Example:-  [` .env.example `](.env.example) file }** for MongoDB, Prisma, and other services.
