@@ -45,13 +45,14 @@ Welcome to the exciting world of Minimal Text Games! Get ready for an immersive 
 > Want to see the games in action? Check out this video demo:
 
 - #### 🦉 Decode Owoify Text!
-| Player1 (Host) |
-|------------|
-| [owoify_text_desktop.webm](static/owoify_text_desktop.webm) |
 
-| Player2 (Guest) |
+| [Player1 (Host)](static/owoify_text_desktop.webm) |
 |------------|
-| [owoify_text_mobile.webm](static/owoify_text_mobile.webm) |
+| ![owoify_text_desktop](https://github.com/ArnavK-09/minimal-text-games/assets/69188140/f3872bbd-8690-4116-ac20-10ac4fc87dda) |
+
+| [Player2 (Guest)](static/owoify_text_desktop.webm) |
+|------------|
+| ![owoify_text_mobile](https://github.com/ArnavK-09/minimal-text-games/assets/69188140/cdcbea40-1d07-484f-a80b-140f0ede5ecb) |
 
 
 ### 🤼‍♂️ Addons
