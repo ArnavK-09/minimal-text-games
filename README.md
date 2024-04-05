@@ -44,6 +44,9 @@ Welcome to the exciting world of Minimal Text Games! Get ready for an immersive 
 
 > Want to see the games in action? Check out this video demo:
 
+> [!TIP]
+> Embeds below are low quality gifs, used just for the readme. For high quality clear demo videos checkout [**` static `**](static) folder
+
 - #### 🙅‍♀️ Guess the Image Prompt!
 
 | [Player1 (Host)](static/guess_the_prompt_desktop.webm) |
