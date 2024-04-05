@@ -40,9 +40,19 @@ Welcome to the exciting world of Minimal Text Games! Get ready for an immersive 
 
 <p align="center"><strong>And more games are on the way! 🎉</strong></p>
 
-### 📹 Video Demo (soon)
+### 📹 Video Demos
 
 > Want to see the games in action? Check out this video demo:
+
+- #### 🙅‍♀️ Guess the Image Prompt!
+
+| [Player1 (Host)](static/guess_the_prompt_desktop.webm) |
+|------------|
+|  |
+
+| [Player2 (Guest)](static/guess_the_prompt_mobile.webm) |
+|------------|
+|  |
 
 - #### 🦉 Decode Owoify Text!
 
@@ -50,7 +60,7 @@ Welcome to the exciting world of Minimal Text Games! Get ready for an immersive 
 |------------|
 | ![owoify_text_desktop](https://github.com/ArnavK-09/minimal-text-games/assets/69188140/f3872bbd-8690-4116-ac20-10ac4fc87dda) |
 
-| [Player2 (Guest)](static/owoify_text_desktop.webm) |
+| [Player2 (Guest)](static/owoify_text_mobile.webm) |
 |------------|
 | ![owoify_text_mobile](https://github.com/ArnavK-09/minimal-text-games/assets/69188140/cdcbea40-1d07-484f-a80b-140f0ede5ecb) |
 
