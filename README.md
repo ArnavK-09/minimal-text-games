@@ -48,11 +48,11 @@ Welcome to the exciting world of Minimal Text Games! Get ready for an immersive 
 
 | [Player1 (Host)](static/guess_the_prompt_desktop.webm) |
 |------------|
-|  |
+| ![guess_the_prompt_desktop](https://github.com/ArnavK-09/minimal-text-games/assets/69188140/127128d9-2fd7-4978-9bde-b85c8b4623e9) |
 
 | [Player2 (Guest)](static/guess_the_prompt_mobile.webm) |
 |------------|
-|  |
+| ![guess_the_prompt_mobile](https://github.com/ArnavK-09/minimal-text-games/assets/69188140/dfe78712-0204-4f5d-bd0b-811e27a0b928) |
 
 - #### 🦉 Decode Owoify Text!
 
