@@ -32,11 +32,15 @@ Welcome to the exciting world of Minimal Text Games! Get ready for an immersive 
 |------------|
 | ![Demo](static/chat_rpg.jpeg) |
 
+| Multiplayer Game Results |
+|------------|
+| ![Demo](static/results.jpeg) |
+
 
 
 <p align="center"><strong>And more games are on the way! 🎉</strong></p>
 
-### 📹 Video Demo
+### 📹 Video Demo (soon)
 
 > Want to see the games in action? Check out this video demo:
 
