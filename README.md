@@ -44,13 +44,14 @@ Welcome to the exciting world of Minimal Text Games! Get ready for an immersive 
 
 > Want to see the games in action? Check out this video demo:
 
-| Guess the Prompt! [Multi Player] |
+- #### 🦉 Decode Owoify Text!
+| Player1 (Host) |
 |------------|
-| [![Video Demo](https://via.placeholder.com/640x360)](static) |
+| [owoify_text_desktop.webm](static/owoify_text_desktop.webm) |
 
-| Decode OwO-fied text! [Multi Player] |
+| Player2 (Guest) |
 |------------|
-| [![Video Demo](https://via.placeholder.com/640x360)](static) |
+| [owoify_text_mobile.webm](static/owoify_text_mobile.webm) |
 
 
 ### 🤼‍♂️ Addons
