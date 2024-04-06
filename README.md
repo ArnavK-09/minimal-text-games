@@ -72,7 +72,7 @@ Welcome to the exciting world of Minimal Text Games! Get ready for an immersive 
 
 > Here's a sneak peek at some addons to site
 
-| Content Menu |
+| Context Menu |
 |------------|
 | ![Addon](static/context.jpeg) |
 
